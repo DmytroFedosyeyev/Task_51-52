@@ -41,6 +41,34 @@ class Cars:
     def update_price(self, new_price):
         self.price = new_price
 
+
+
+    def edit_car(self):
+        print('Car:')
+        print(f'1. Manufacturer: {self.manu}')
+        print(f'2. Model: {self.model}')
+        print(f'3. Year: {self.year}')
+        print(f'4. Engine capacity: {self.eng_capacity}')
+        print(f'5. Color: {self.color}')
+        print(f'6. Price: {self.price}')
+
+        choice = input('Enter number what you want to edit: ')
+        if choice == '1':
+            self.update_manu(input('Enter new manufacturer: ').strip())
+        elif choice == '2':
+            self.update_model(input('Enter new model: ').strip())
+        elif choice == '3':
+            self.update_year('Enter new year: ')
+        elif choice == '4':
+            self.update_capacity('Enter new engine capacity: ')
+        elif choice == '5':
+            self.update_color('Enter new color: ')
+        elif choice == '6':
+            self.update_price('Enter new price: ')
+        print('Data changed!')
+
+
+
 def list_cars():
     try:
         file_exist = os.path.isfile('cars.csv')
@@ -64,40 +92,6 @@ def list_cars():
                     break
     except Exception as e:
         print(f'Ошибка создания файла: {e}')
-
-def edit_car():
-    car_data = input('Enter manufacturer car which you want to edit: ').strip().lower()
-    all_cars =[]
-    with open('cars.csv', 'r', encoding='utf-8') as file:
-        reader = csv.DictReader(file)
-        for i in reader:
-            all_cars.append(i)
-    found_car = False
-    for j in all_cars:
-        if j[0].strip().lower() == car_data:
-            found_car = True
-            print(f'Manufacturer: {j[0].capitalize()}')
-            print(f' Model: {j[1].capitalize()}')
-            print(f'Year: {j[2].capitalize()}')
-            print(f'Engine capacity: {j[3].capitalize()}')
-            print(f'Color {j[4].capitalize()}')
-            print(f'Price: {j[5].capitalize()}')
-
-            user_choice = input('Enter the number what you want to edit: ')
-            if user_choice == '1':
-                j[2] = input('Enter new year: ')
-            elif user_choice == '2':
-                j[3] = input('Enter new engine capacity: ')
-            elif user_choice == '3':
-                j[4] = input('Enter new color: ')
-            elif user_choice == '4':
-                j[5] = input('Enter new price: ')
-    return print(all_cars)
-
-edit_car()
-
-
-
 #
 # while True:
 #     print("\n1. Add new car")
