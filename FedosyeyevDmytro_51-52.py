@@ -3,11 +3,14 @@
 # моделі, рік випуску, виробника, об’єм двигуна, колір машини,
 # ціну. Реалізуйте методи класу для введення-виведення даних
 # та інших операцій.
+
 import os
 import csv
+from tabulate import tabulate
 
 class Cars:
-    def __init__(self, manu, model, year, eng_capacity, color, price):
+    def __init__(self, car_id, manu, model, year, eng_capacity, color, price):
+        self.car_id = car_id
         self.manu = manu
         self.model = model
         self.year = year
@@ -18,6 +21,7 @@ class Cars:
 
     def car_info(self):
         return {
+            'ID': self.car_id,
             'Manufacturer': self.manu,
             'Model': self.model,
             'Year': self.year,
@@ -25,27 +29,6 @@ class Cars:
             'Color': self.color,
             'Price': self.price
         }
-
-
-    def update_manu(self, new_manu):
-        self.manu = new_manu
-
-    def update_model(self, new_model):
-        self.model = new_model
-
-    def update_year(self, new_yar):
-        self.year = new_yar
-
-    def update_capacity(self, new_capacity):
-        self.eng_capacity = new_capacity
-
-    def update_color(self, new_color):
-        self.color = new_color
-
-    def update_price(self, new_price):
-        self.price = new_price
-
-
 
     def edit_car(self):
         print('Car:')
@@ -58,29 +41,31 @@ class Cars:
 
         choice = input('Enter number what you want to edit: ')
         if choice == '1':
-            self.update_manu(input('Enter new manufacturer: ').strip())
+            self.manu = input('Enter new manufacturer: ').strip()
         elif choice == '2':
-            self.update_model(input('Enter new model: ').strip())
+            self.model = input('Enter new model: ').strip()
         elif choice == '3':
-            self.update_year(input('Enter new year: ').strip())
+            self.year = input('Enter new year: ').strip()
         elif choice == '4':
-            self.update_capacity(input('Enter new engine capacity: ').strip())
+            self.capacity = input('Enter new engine capacity: ').strip()
         elif choice == '5':
-            self.update_color(input('Enter new color: ').strip())
+            self.color = input('Enter new color: ').strip()
         elif choice == '6':
-            self.update_price(input('Enter new price: ').strip())
+            self.price = input('Enter new price: ').strip()
 
 
 def found_car():
-    car_manufac = input('Enter manufacturer which car you want to edit: ').strip().lower()
+    try:
+        car_id = input('Enter ID which car you want to edit: ').strip()
 
-    with open('cars.csv', 'r', encoding='utf-8') as file:
-        reader = csv.DictReader(file)
-        all_cars = list(reader)
+        with open('cars.csv', 'r', encoding='utf-8') as file:
+            reader = csv.DictReader(file)
+            all_cars = list(reader)
 
-    for j in all_cars:
-        if j['Manufacturer'].strip().lower() == car_manufac:
+        for i, j in enumerate(all_cars):
+            if j['ID'].strip() == car_id:
                 car = Cars(
+                    j['ID'],
                     j['Manufacturer'],
                     j['Model'],
                     j['Year'],
@@ -89,11 +74,11 @@ def found_car():
                     j['Price']
                 )
                 car.edit_car()
-                j.
+                all_cars[i] = car.car_info()
 
                 with open('cars.csv', 'w', newline='', encoding='utf-8') as file:
                     writer = csv.DictWriter(file,
-                                            fieldnames=['Manufacturer', 'Model', 'Year', 'Engine capacity', 'Color',
+                                            fieldnames=['ID', 'Manufacturer', 'Model', 'Year', 'Engine capacity', 'Color',
                                                         'Price'])
                     writer.writeheader()
                     writer.writerows(all_cars)
@@ -101,17 +86,21 @@ def found_car():
                 break
         else:
             print('Car not found')
-
+    except FileNotFoundError:
+        print('File cars.csv not found.')
+    except Exception as e:
+        print(f'Unexpected error: {e}')
 
 
 def list_cars():
     try:
         file_exist = os.path.isfile('cars.csv')
         with open('cars.csv', 'a', newline='') as file:
-            writer = csv.DictWriter(file, fieldnames=['Manufacturer', 'Model', 'Year', 'Engine capacity', 'Color', 'Price'])
+            writer = csv.DictWriter(file, fieldnames=['ID', 'Manufacturer', 'Model', 'Year', 'Engine capacity', 'Color', 'Price'])
             if not file_exist or os.path.getsize('cars.csv') == 0:
                 writer.writeheader()
             while True:
+                card_id = input('Enter ID number: ')
                 manu = input('Enter manufacturer: ')
                 model = input('Enter model: ')
                 year = input('Enter year: ')
@@ -119,26 +108,64 @@ def list_cars():
                 color = input('Enter color: ')
                 price = input('Enter price: ')
 
-                car = Cars(manu, model, year, eng_capacity, color, price)
+                car = Cars(card_id, manu, model, year, eng_capacity, color, price)
                 writer.writerow(car.car_info())
 
                 a = input('Do you want to add car? (y/n): ')
                 if a.lower() != 'y':
                     break
     except Exception as e:
-        print(f'Ошибка создания файла: {e}')
-#
-# while True:
-#     print("\n1. Add new car")
-#     print("2. Edit car data")
-#     print("3. Compare cars")
-#     print("4. Save and exit")
-#
-#     choice = input('Enter your choice: ')
-#
-#     if choice == '1':
-#         list_cars()
-#     elif choice == '2':
+        print(f'Mistake of creature file: {e}')
+
+
+def compare_cars():
+    try:
+        with open('cars.csv', 'r', encoding='utf-8') as file:
+            reader = csv.DictReader(file)
+            all_cars = list(reader)
+
+        found_cars = []
+        car1 = input('Enter ID number of car 1: ').strip()
+        car2 = input('Enter ID number of car 2: ').strip()
+        for l in all_cars:
+            if l['ID'] == car1 or l['ID'] == car2:
+                found_cars.append(Cars(
+                    l['ID'],
+                    l['Manufacturer'],
+                    l['Model'],
+                    l['Year'],
+                    l['Engine capacity'],
+                    l['Color'],
+                    l['Price']
+                ))
+        data_car = []
+        for i in found_cars:
+            data_car.append(i.car_info())
+
+        headers = ['ID', 'Manufacturer', 'Model', 'Year', 'Engine capacity', 'Color', 'Price']
+        print(tabulate(data_car, headers='keys', tablefmt='grid'))
+
+    except FileNotFoundError:
+        print('File cars.csv not found.')
+    except Exception as e:
+        print(f'Unexpected error: {e}')
+
+while True:
+    print("\n1. Add new car")
+    print("2. Edit car data")
+    print("3. Compare cars")
+    print("4. Save and exit")
+
+    choice = input('Enter your choice: ')
+
+    if choice == '1':
+        list_cars()
+    elif choice == '2':
+        found_car()
+    elif choice == '3':
+        compare_cars()
+    elif choice == '4':
+        break
 
 
 # Завдання 2
