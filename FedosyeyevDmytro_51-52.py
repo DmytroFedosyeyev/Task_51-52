@@ -183,39 +183,95 @@ class Book:
         self.price = price
 
     def display_info(self):
-        print(f"Название: {self.name}")
-        print(f"Год издания: {self.year}")
-        print(f"Издатель: {self.publisher}")
-        print(f"Жанр: {self.genre}")
-        print(f"Автор: {self.author}")
-        print(f"Цена: {self.price}")
+        print(f'The title: {self.name}')
+        print(f'The year of publishing: {self.year}')
+        print(f'The publisher: {self.publisher}')
+        print(f'The genre: {self.genre}')
+        print(f'The author: {self.author}')
+        print(f'The price: {self.price}')
 
-    def update_name(self, new_name):
-        self.name = new_name
+    def edit_book(self):
+        print('Book:')
+        print(f'1. Title: {self.name}')
+        print(f'2. Year of publishing: {self.year}')
+        print(f'3. Publisher: {self.publisher}')
+        print(f'4. Genre: {self.genre}')
+        print(f'5. Author: {self.author}')
+        print(f'6. Price: {self.price}')
 
-    def update_year(self, new_year):
-        self.year = new_year
-
-    def update_publisher(self, new_publisher):
-        self.publisher = new_publisher
-
-    def update_genre(self, new_genre):
-        self.genre = new_genre
-
-    def update_author(self, new_author):
-        self.author = new_author
-
-    def update_price(self, new_price):
-        self.price = new_price
+        choice = input('Enter number what you want to edit: ')
+        if choice == '1':
+            self.name = input('Enter new title of book: ').strip()
+        elif choice == '2':
+            self.year = input('Enter new year of publishing: ').strip()
+        elif choice == '3':
+            self.publisher = input('Enter new publisher: ').strip()
+        elif choice == '4':
+            self.genre = input('Enter new genre of book: ').strip()
+        elif choice == '5':
+            self.author = input('Enter new author: ').strip()
+        elif choice == '6':
+            self.price = input('Enter new price: ').strip()
 
     def input_book_info(self):
-        self.name = input("Введите название книги: ")
-        self.year = input("Введите год издания: ")
-        self.publisher = input("Введите издателя: ")
-        self.genre = input("Введите жанр: ")
-        self.author = input("Введите автора: ")
-        self.price = input("Введите цену: ")
+        self.name = input('Enter title of book: ')
+        self.year = input('Enter year of publishing: ')
+        self.publisher = input('Enter publisher: ')
+        self.genre = input('Enter genre of book: ')
+        self.author = input('Enter author: ')
+        self.price = input('Enter price: ')
 
     def save_to_file(self, filename):
         with open('books.csv', 'a', encoding='utf-8') as file:
             file.write(f"{self.name},{self.year},{self.publisher},{self.genre},{self.author},{self.price}\n")
+
+
+# Завдання 3
+# Реалізуйте клас «Стадіон». Збережіть у класі: назву стаді-
+# ону, дату відкриття, країну, місто, місткість. Реалізуйте методи
+# класу для введення-виведення даних та інших операцій.
+
+class Stadium:
+    def __init__(self, name, opening_date, country, city, capacity):
+        self.name = name
+        self.opening_date = opening_date
+        self.country = country
+        self.city = city
+        self.capacity = capacity
+
+    def display_info(self):
+        print(f'Name of the stadium: {self.name}')
+        print(f'Opening date: {self.opening_date}')
+        print(f'Country: {self.country}')
+        print(f'City: {self.city}')
+        print(f'Capacity: {self.capacity}')
+
+    def edit_stadium(self):
+        print('Stadium:')
+        print(f'1. Name of the stadium: {self.name}')
+        print(f'2. Opening date: {self.opening_date}')
+        print(f'3. Country: {self.country}')
+        print(f'4. City: {self.city}')
+        print(f'5. Capacity: {self.capacity}')
+
+        choice = input('Enter number what you want to edit: ')
+        if choice == '1':
+            self.name = input('Enter new name of the stadium: ').strip()
+        elif choice == '2':
+            self.opening_date = input('Enter new opening date: ').strip()
+        elif choice == '3':
+            self.country = input('Enter new country: ').strip()
+        elif choice == '4':
+            self.city = input('Enter new city: ').strip()
+        elif choice == '5':
+            self.capacity = input('Enter new capacity: ').strip()
+
+    def get_info(self):
+        return {
+            'Name': self.name,
+            'Opening data': self.opening_date,
+            'Country': self.country,
+            'City': self.city,
+            'Capacity': self.capacity
+        }
+
