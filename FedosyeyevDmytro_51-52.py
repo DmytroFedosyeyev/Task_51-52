@@ -1,3 +1,5 @@
+# Ссылка на Git Hub: https://github.com/DmytroFedosyeyev/Task_51-52
+
 # Завдання 1
 # Реалізуйте клас «Автомобіль». Збережіть у класі: назву
 # моделі, рік випуску, виробника, об’єм двигуна, колір машини,
@@ -154,7 +156,7 @@ while True:
     print("\n1. Add new car")
     print("2. Edit car data")
     print("3. Compare cars")
-    print("4. Save and exit")
+    print("4. Exit")
 
     choice = input('Enter your choice: ')
 
